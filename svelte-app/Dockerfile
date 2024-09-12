@@ -1,31 +1,27 @@
-# Use a node image for building
-FROM node:18 AS build
+FROM node:18.18.0-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json ./
+COPY package*.json .
+COPY pnpm-lock.yaml .
 
-# Install dependencies
-RUN npm install
+RUN npm i -g pnpm
+RUN pnpm install
 
-# Copy source files
 COPY . .
 
-# Build the application
-RUN npm run build
+RUN pnpm run build
+RUN pnpm prune --prod
 
-# Use an nginx image to serve the built files
-FROM nginx:alpine
+FROM node:18.8.0-alpine AS deployer
 
-# Copy built files from the build stage
-COPY --from=build /app/public /usr/share/nginx/html
+WORKDIR /app
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /app/build build/
+COPY --from=builder /app/package.json .
 
-# Expose port 80
-EXPOSE 80
+EXPOSE 3000
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+ENV NODE_ENV=production
+
+CMD [ "node", "build" ]
