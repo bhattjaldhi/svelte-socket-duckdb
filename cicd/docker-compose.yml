@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  flask:
+    build:
+      context: ../flask-server  # Replace with path to your Flask app
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+
+  svelte:
+    build:
+      context: ./svelte-app  # Replace with path to your Svelte app
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
