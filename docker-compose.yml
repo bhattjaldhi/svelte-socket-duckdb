@@ -10,12 +10,16 @@ services:
       - ./flask-server:/app
     environment:
       - FLASK_ENV=production
+    networks:
+      - app-network
 
   svelte:
     build:
       context: ./svelte-app
     ports:
       - "3000:3000"
+    networks:
+      - app-network
 
   nginx:
     image: nginx:alpine
@@ -26,3 +30,9 @@ services:
     depends_on:
       - flask
       - svelte
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
