@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Start the application with Gunicorn
-CMD ["gunicorn", "--worker-class", "eventlet", "-w", "1" ,"app:app"]
+CMD ["gunicorn", "--worker-class", "eventlet", "-w", "1", "-b", "0.0.0.0:5000" ,"app:app"]
