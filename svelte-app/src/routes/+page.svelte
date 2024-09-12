@@ -8,7 +8,7 @@
   
     // Establish WebSocket connection
     onMount(() => {
-      socket = io('http://127.0.0.1:5000');  // Connect to Flask SocketIO server
+      socket = io('http://ec2-54-226-66-45.compute-1.amazonaws.com');  // Connect to Flask SocketIO server
       fetchData();
   
       // Listen for update success message from the backend
@@ -31,7 +31,7 @@
     // Fetch initial data from the Flask API
     const fetchData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/table");
+        const response = await fetch("http://ec2-54-226-66-45.compute-1.amazonaws.com/api/table");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
