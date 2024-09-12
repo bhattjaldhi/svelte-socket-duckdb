@@ -13,11 +13,8 @@ RUN pip install -r requirements.txt
 # Copy application code
 COPY . .
 
-# Install Gunicorn
-RUN pip install gunicorn
-
 # Expose port 5000
 EXPOSE 5000
 
 # Start the application with Gunicorn
-CMD ["python", "app.py"]
+CMD ["gunicorn", "--worker-class", "eventlet", "-w", "1" ,"app:app"]
