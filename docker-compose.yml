@@ -6,6 +6,10 @@ services:
       context: ./flask-server
     ports:
       - "5000:5000"
+    volumes:
+      - ./flask-server:/app
+    environment:
+      - FLASK_ENV=production
     networks:
       - app-network
 
