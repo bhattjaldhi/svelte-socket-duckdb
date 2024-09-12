@@ -48,7 +48,8 @@ sequenceDiagram
     participant F as Frontend (Svelte)
     participant B as Backend (Flask)
     participant D as Database (DuckDB)
-
+    participant R as Redis (Message Queue)
+    
     F->>B: GET /table to fetch table data
     B->>D: Query table data
     D-->>B: Return table data
@@ -57,5 +58,8 @@ sequenceDiagram
     F->>B: User performs changes in table (via WebSocket)
     B->>D: Update .db file with new cell value
     D-->>B: Confirm update
+    
+    B->>R: Publish update message to Redis
+    R-->>B: Broadcast update message from Redis
     B->>F: Broadcast update to all clients
     F-->>F: Reflect changes in all clients
