@@ -5,7 +5,7 @@ import duckdb
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allow CORS for REST API
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')  # Allow CORS for WebSocket
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet', message_queue='redis://redis:6379')  # Allow CORS for WebSocket
 
 # Path to the DuckDB .db file
 DB_FILE_PATH = 'data.db'
