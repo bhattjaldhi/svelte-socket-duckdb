@@ -3,7 +3,7 @@ version: '3.8'
 services:
   flask:
     build:
-      context: ../flask-server
+      context: ./flask-server
     ports:
       - "5000:5000"
     networks:
@@ -11,7 +11,7 @@ services:
 
   svelte:
     build:
-      context: ../svelte-app
+      context: ./svelte-app
     ports:
       - "80:80"
     networks:
