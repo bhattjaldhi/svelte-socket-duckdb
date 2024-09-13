@@ -12,7 +12,7 @@ services:
       - FLASK_ENV=production
       - REDIS_URL=redis://proxy:9000/0
     depends_on:
-      - haproxy
+      - proxy
     networks:
       - app-network
 
