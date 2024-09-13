@@ -11,8 +11,6 @@ services:
     environment:
       - FLASK_ENV=production
       - REDIS_URL=redis://haproxy:6379/0
-    depends_on:
-      - haproxy
     networks:
       - app-network
 
