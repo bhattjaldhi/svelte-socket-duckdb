@@ -10,9 +10,9 @@ services:
       - ./flask-server:/app
     environment:
       - FLASK_ENV=production
-      - REDIS_URL=redis://proxy:9000/0
+      - REDIS_URL=redis://haproxy:6379/0
     depends_on:
-      - proxy
+      - haproxy
     networks:
       - app-network
 
@@ -36,48 +36,43 @@ services:
     networks:
       - app-network
 
-  redis01:
-    build: ./redis
-    ports:
-      - 6379:6379
+  redis1:
+    image: "redis:6.2-alpine"
+    command: redis-server --appendonly yes --port 6379
+    volumes:
+      - redis-data-1:/data
     networks:
       - app-network
-    env_file:
-      - './redis/env/master_variables.env'
 
-  redis02:
-    build: ./redis
-    ports:
-      - 6380:6379
-    depends_on:
-      - redis01
+  redis2:
+    image: "redis:6.2-alpine"
+    command: redis-server --appendonly yes --port 6380
+    volumes:
+      - redis-data-2:/data
     networks:
       - app-network
-    env_file:
-      - './redis/env/slave_variables.env'
 
-  redis03:
-    build: ./redis
-    ports:
-      - 6381:6379
-    depends_on:
-      - redis01
+  redis3:
+    image: "redis:6.2-alpine"
+    command: redis-server --appendonly yes --port 6381
+    volumes:
+      - redis-data-3:/data
     networks:
       - app-network
-    env_file:
-      - './redis/env/slave_variables.env'
 
-  proxy:
-    build: ./haproxy
+  haproxy:
+    image: haproxy:2.3
+    hostname: haproxy
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     depends_on:
-      - redis01
-      - redis02
-      - redis03
+      - redis1
+      - redis2
+      - redis3
     networks:
       - app-network
-    ports:
-      - '9000:9000'
-      - '8080:80'
 
 volumes:
   redis-data-1:
