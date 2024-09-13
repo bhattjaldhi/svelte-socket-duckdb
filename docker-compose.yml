@@ -10,9 +10,9 @@ services:
       - ./flask-server:/app
     environment:
       - FLASK_ENV=production
-      - REDIS_URL=redis://redis:6379/0
+      - REDIS_URL=redis://haproxy:6379/0
     depends_on:
-      - redis
+      - haproxy
     networks:
       - app-network
 
@@ -36,18 +36,47 @@ services:
     networks:
       - app-network
 
-  redis:
+  redis1:
     image: "redis:6.2-alpine"
-    command: redis-server --appendonly yes
+    command: redis-server --appendonly yes --port 6379
     volumes:
-      - redis-data:/data
+      - redis-data-1:/data
+    networks:
+      - app-network
+
+  redis2:
+    image: "redis:6.2-alpine"
+    command: redis-server --appendonly yes --port 6379
+    volumes:
+      - redis-data-2:/data
+    networks:
+      - app-network
+
+  redis3:
+    image: "redis:6.2-alpine"
+    command: redis-server --appendonly yes --port 6379
+    volumes:
+      - redis-data-3:/data
+    networks:
+      - app-network
+
+  haproxy:
+    image: haproxy:2.3
     ports:
       - "6379:6379"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - redis1
+      - redis2
+      - redis3
     networks:
       - app-network
 
 volumes:
-  redis-data:
+  redis-data-1:
+  redis-data-2:
+  redis-data-3:
 
 networks:
   app-network:
