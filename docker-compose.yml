@@ -36,48 +36,32 @@ services:
     networks:
       - app-network
 
-  redis1:
-    image: "redis:6.2-alpine"
-    command: redis-server --appendonly yes --port 6379
+  redis-master:
+    image: redis:6.0.7
+    container_name: redis-master
+    restart: always
     volumes:
-      - redis-data-1:/data
-    networks:
-      - app-network
-
-  redis2:
-    image: "redis:6.2-alpine"
-    command: redis-server --appendonly yes --port 6380
-    volumes:
-      - redis-data-2:/data
-    networks:
-      - app-network
-
-  redis3:
-    image: "redis:6.2-alpine"
-    command: redis-server --appendonly yes --port 6381
-    volumes:
-      - redis-data-3:/data
-    networks:
-      - app-network
-
-  haproxy:
-    image: haproxy:2.3
-    hostname: haproxy
+      - redis_master:/data
     ports:
-      - "6379:6379"
+      - 6379:6379
+    networks:
+      - app-network
+
+  redis-slave:
+    image: redis:6.0.7
+    container_name: redis-slave
+    restart: always
     volumes:
-      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-    depends_on:
-      - redis1
-      - redis2
-      - redis3
+      - redis_slave:/data
+    ports:
+      - 6479:6379
+    command: redis-server --slaveof redis-master 6379
     networks:
       - app-network
 
 volumes:
-  redis-data-1:
-  redis-data-2:
-  redis-data-3:
+  redis_master:
+  redis_slave:
 
 networks:
   app-network:
