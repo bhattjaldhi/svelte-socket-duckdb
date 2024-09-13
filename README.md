@@ -46,20 +46,29 @@ Here’s a sequence diagram that explains the process:
 ```mermaid
 sequenceDiagram
     participant F as Frontend (Svelte)
+    participant N as Nginx
     participant B as Backend (Flask)
     participant D as Database (DuckDB)
-    participant R as Redis (Message Queue)
-    
-    F->>B: GET /table to fetch table data
-    B->>D: Query table data
-    D-->>B: Return table data
-    B-->>F: Send table data
 
-    F->>B: User performs changes in table (via WebSocket)
+    F->>N: GET /table to fetch table data
+    N->>B: Forward request
+    B->>RM: Check cache for table data
+    alt Data in cache
+        RM-->>B: Return cached data
+    else Data not in cache
+        B->>D: Query table data
+        D-->>B: Return table data
+        B->>RM: Cache table data
+    end
+    B-->>N: Send table data
+    N-->>F: Forward table data
+
+    F->>N: User performs changes in table (via WebSocket)
+    N->>B: Forward changes
     B->>D: Update .db file with new cell value
     D-->>B: Confirm update
-    
-    B->>R: Publish update message to Redis
-    R-->>B: Broadcast update message from Redis
-    B->>F: Broadcast update to all clients
+    B->>RM: Update cache
+    RM->>RS: Replicate changes
+    B->>N: Broadcast update to all clients
+    N->>F: Forward update
     F-->>F: Reflect changes in all clients
