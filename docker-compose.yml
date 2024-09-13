@@ -41,11 +41,9 @@ services:
     ports:
       - 6379:6379
     networks:
-      - host
+      - app-network
     env_file:
       - './redis/env/master_variables.env'
-    networks:
-      - app-network
 
   redis02:
     build: ./redis
@@ -54,11 +52,9 @@ services:
     depends_on:
       - redis01
     networks:
-      - host
+      - app-network
     env_file:
       - './redis/env/slave_variables.env'
-    networks:
-      - app-network
 
   redis03:
     build: ./redis
@@ -67,11 +63,9 @@ services:
     depends_on:
       - redis01
     networks:
-      - host
+      - app-network
     env_file:
       - './redis/env/slave_variables.env'
-    networks:
-      - app-network
 
   proxy:
     build: ./haproxy
@@ -80,7 +74,7 @@ services:
       - redis02
       - redis03
     networks:
-      - host
+      - app-network
     ports:
       - '9000:9000'
       - '8080:80'
@@ -91,6 +85,5 @@ volumes:
   redis-data-3:
 
 networks:
-  host:
   app-network:
     driver: bridge
