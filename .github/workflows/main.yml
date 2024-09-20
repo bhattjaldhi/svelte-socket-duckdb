@@ -21,11 +21,13 @@ jobs:
       - name: Deploy to EC2
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
+          SERVER_URL: ${{ secrets.SERVER_URL }}
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@$EC2_HOST <<EOF
             cd /home/ec2-user/svelte-socket-duckdb
             sudo docker-compose down
             sudo docker-compose pull
-            sudo docker-compose up -d --build
+            SERVER_URL=${SERVER_URL} sudo docker-compose build
+            sudo docker-compose up -d
             sudo docker system prune -af
           EOF

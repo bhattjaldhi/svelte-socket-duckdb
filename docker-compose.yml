@@ -12,9 +12,11 @@ services:
       - FLASK_ENV=production
       - REDIS_URL=redis://redis-main:6379/0
     depends_on:
-      - redis-main
+      redis-main:
+        condition: service_healthy
     networks:
       - app-network
+    restart: always
 
   svelte:
     build:
@@ -27,6 +29,7 @@ services:
       - SERVER_URL=${SERVER_URL}
     networks:
       - app-network
+    restart: always
 
   nginx:
     image: nginx:alpine
@@ -39,29 +42,38 @@ services:
       - svelte
     networks:
       - app-network
+    restart: always
 
   redis-main:
-    image: redis:6.0.7
+    image: redis:${REDIS_VERSION:-6.0.7}
     container_name: redis-main
     restart: always
     volumes:
       - redis_main:/data
-    ports:
-      - 6379:6379
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - 6379:6379  # Optional, you can remove this if external access is not needed
 
   redis-secondary:
-    image: redis:6.0.7
+    image: redis:${REDIS_VERSION:-6.0.7}
     container_name: redis-secondary
     restart: always
     volumes:
       - redis_secondary:/data
     ports:
-      - 6479:6379
+      - 6479:6379  # Optional, you can remove this if external access is not needed
     command: redis-server --slaveof redis-main 6379
     networks:
       - app-network
+    depends_on:
+      redis-main:
+        condition: service_healthy
 
 volumes:
   redis_main:
