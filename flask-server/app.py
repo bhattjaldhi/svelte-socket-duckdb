@@ -14,7 +14,7 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet', messag
 # Path to the DuckDB .db file
 DB_FILE_PATH = 'data.db'
 
-@app.route('/table', methods=['GET'])
+@app.route('/api/table', methods=['GET'])
 def get_table_data():
     try:
         # Connect to the DuckDB .db file
@@ -52,7 +52,7 @@ def handle_cell_update(data):
         emit('cell_update_broadcast', data, broadcast=True)
 
     except Exception as e:
-        emit('update_failure', {'status': 'failure', 'error': str(e)})
+        emit('update_failure', {'status': 'failure', 'error': str(e), 'row_id': row_id, 'column': column})
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5001, debug=True)

@@ -1,64 +1,30 @@
 <script>
-    import { onMount } from "svelte";
-    import { Button } from "flowbite-svelte";
-    import io from 'socket.io-client';
-  
-    let tableData = [];
-    let socket;
-  
-    // Establish WebSocket connection
-    onMount(() => {
-      socket = io('http://ec2-54-226-66-45.compute-1.amazonaws.com');  // Connect to Flask SocketIO server
-      fetchData();
-  
-      // Listen for update success message from the backend
-      socket.on('update_success', (data) => {
-        console.log(`Update successful for row: ${data.row_id}, column: ${data.column}`);
-      });
-  
-      // Listen for broadcasted cell updates from other users
-      socket.on('cell_update_broadcast', (data) => {
-        const { row_id, column, new_value } = data;
-        updateTableDataBroadcast(row_id, column, new_value);
-      });
-  
-      // Handle errors
-      socket.on('update_failure', (data) => {
-        console.error('Error updating data:', data.error);
-      });
-    });
-  
-    // Fetch initial data from the Flask API
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://ec2-54-226-66-45.compute-1.amazonaws.com/api/table");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        tableData = await response.json();
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-  
-    // Send updated cell data to Flask via WebSocket
-    const updateCell = (rowId, column, value) => {
-      socket.emit('cell_update', { row_id: rowId, column: column, new_value: value });
-    };
-  
-    // Update the tableData array locally when a cell update is received from another user
-    const updateTableDataBroadcast = (rowId, column, newValue) => {
-      const rowIndex = tableData.findIndex(row => row.id === rowId);
-      if (rowIndex !== -1) {
-        tableData[rowIndex][column] = newValue;
-      }
-    };
-  
-    // Update the tableData array and send the change to the server
-    const updateTableData = (index, field, value) => {
-      tableData[index][field] = value;
-      updateCell(tableData[index].id, field, value);
-    };
+   import { onMount, onDestroy } from "svelte";
+  import { tableStore } from '../store/tableStore';
+
+  let tableData = [];
+
+  // Subscribe to the tableStore
+  const unsubscribe = tableStore.subscribe(value => {
+    tableData = value;
+  });
+
+  onMount(() => {
+    tableStore.initSocket();
+    tableStore.fetchData();
+  });
+
+  onDestroy(() => {
+    // Close the socket connection when the component is destroyed
+    tableStore.destroySocket();
+    // Unsubscribe from the store
+    unsubscribe();
+  });
+
+  // Update the tableData and send the change to the server
+  const updateTableData = (rowId, field, value) => {
+    tableStore.updateCell(rowId, field, value);
+  };
   </script>
   
   <div class="container mx-auto p-4">
