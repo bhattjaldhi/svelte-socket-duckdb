@@ -14,7 +14,7 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet', messag
 # Path to the DuckDB .db file
 DB_FILE_PATH = 'data.db'
 
-@app.route('/api/table', methods=['GET'])
+@app.route('/table', methods=['GET'])
 def get_table_data():
     try:
         # Connect to the DuckDB .db file
