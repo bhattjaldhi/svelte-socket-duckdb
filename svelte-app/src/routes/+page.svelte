@@ -28,7 +28,7 @@
   </script>
   
   <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Editable Table</h1>
+    <h1 class="text-2xl font-bold mb-4">Editable Table - real time</h1>
   
     {#if tableData.length > 0}
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
