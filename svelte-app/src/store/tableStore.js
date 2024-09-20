@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import io from 'socket.io-client';
 
-const SERVER_URL = process.env.VITE_SERVER_URL || 'http://localhost:5000';
+const SERVER_URL = 'http://ec2-54-226-66-45.compute-1.amazonaws.com'
 
 function createTableStore() {
     const tableData = writable([]);
