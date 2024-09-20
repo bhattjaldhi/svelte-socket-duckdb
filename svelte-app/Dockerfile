@@ -10,10 +10,6 @@ RUN npm install
 
 COPY . .
 
-# Create .env file from build arguments
-ARG SERVER_URL
-RUN echo "VITE_SERVER_URL=${SERVER_URL}" > .env
-
 RUN npm run build
 
 FROM node:18.8.0-alpine AS deployer

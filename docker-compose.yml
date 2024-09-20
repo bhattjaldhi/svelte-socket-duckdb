@@ -21,12 +21,8 @@ services:
   svelte:
     build:
       context: ./svelte-app
-      args:
-        - SERVER_URL=${SERVER_URL}
     ports:
       - "3000:3000"
-    environment:
-      - SERVER_URL=${SERVER_URL}
     networks:
       - app-network
     restart: always
