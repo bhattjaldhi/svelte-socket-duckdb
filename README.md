@@ -1,10 +1,21 @@
 # Svelte Socket DuckDB
 
+## Table of Contents
+
+- [Svelte Socket DuckDB](#svelte-socket-duckdb)
+  - [Table of Contents](#table-of-contents)
+  - [Problem Statement](#problem-statement)
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Project Structure](#project-structure)
+  - [Installation and Setup](#installation-and-setup)
+    - [Docker compose](#docker-compose)
+  - [Mermaid Sequence Diagram](#mermaid-sequence-diagram)
 ## Problem Statement
 
 In many data-driven web applications, there's a need for real-time data analysis and visualization. Traditional client-server architectures often struggle with providing instantaneous updates and handling large datasets efficiently. This project aims to solve this problem by combining the power of Svelte for reactive UI updates, WebSockets for real-time communication, and DuckDB for fast, in-memory SQL analytics.
 
-The Svelte Socket DuckDB project demonstrates a solution that allows users to perform SQL queries on a DuckDB database and receive results in real-time, all within a responsive web interface. This approach is particularly useful for scenarios where users need to explore and analyze data interactively, without the latency typically associated with traditional database queries.
+The Svelte Socket DuckDB project demonstrates a solution that allows users to update the input fields from the frontend (svelte-app), receive the real-time update from the backend (flask) & web socket, all within a web interface. This approach is particularly useful for scenarios where users need to receive updates in real-time, without the latency typically associated with traditional database queries.
 
 ## Features
 
