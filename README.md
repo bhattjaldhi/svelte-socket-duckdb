@@ -1,43 +1,71 @@
-# Real-Time Editable Table with Flask and Svelte
+# Svelte Socket DuckDB
 
-This project demonstrates how to create a real-time editable table using Flask as the backend and Svelte for the frontend. Changes made to the table are sent to the backend via WebSockets and the database is updated accordingly. All connected clients receive updates in real-time.
+## Problem Statement
+
+In many data-driven web applications, there's a need for real-time data analysis and visualization. Traditional client-server architectures often struggle with providing instantaneous updates and handling large datasets efficiently. This project aims to solve this problem by combining the power of Svelte for reactive UI updates, WebSockets for real-time communication, and DuckDB for fast, in-memory SQL analytics.
+
+The Svelte Socket DuckDB project demonstrates a solution that allows users to perform SQL queries on a DuckDB database and receive results in real-time, all within a responsive web interface. This approach is particularly useful for scenarios where users need to explore and analyze data interactively, without the latency typically associated with traditional database queries.
+
+## Features
+
+- SQL query execution using DuckDB
+- WebSocket communication for instant updates
+- Reactive UI built with Svelte
+- In-memory database processing for fast query results
+
+## Prerequisites
+
+- Node.js (v14 or later)
+- npm (v6 or later)
+- Python (v3.9 or later)
+- Docker
 
 ## Project Structure
 
-- **Backend**: Flask application with Flask-SocketIO for real-time communication and DuckDB for database management.
-- **Frontend**: Svelte application using Flowbite UI framework for a modern table display and WebSocket communication.
+- **flask-server**: Flask application with Flask-SocketIO for real-time communication and DuckDB for database management.
+- **svelte-app**: Svelte application using Flowbite UI framework for a modern table display and WebSocket communication.
 
 ## Installation and Setup
 
-### Backend
+### Docker compose
 
-1. **Create a Virtual Environment**
-
+1. Install docker-compose plugin
+   
     ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    sudo apt-get update
+    sudo apt-get install docker-compose-plugin
     ```
 
-2. **Install Dependencies**
+2. Verify Docker installation
 
     ```bash
-    pip install -r requirements.txt
+    docker compose version
+    ```
+1. Clone the repository
+   
+```bash 
+git clone https://github.com/bhattjaldhi/svelte-socket-duckdb.git
+```
+
+2. Navigate to the folder
+   
+   ```bash
+   cd svelte-socket-duckdb
+   ```
+
+3. To run in detached mode (in the background):
+   
+    ```bash
+    docker compose up
     ```
 
-### Frontend
-
-1. **Setup Svelte Project**
+4. To stop the containers:
 
     ```bash
-    npx degit sveltejs/template svelte-app
-    cd svelte-app
-    npm install
+    docker compose down
     ```
-2. **Run the Svelte Application**
 
-    ```bash
-    npm run dev
-    ```
+
 
 ## Mermaid Sequence Diagram
 
