@@ -6,7 +6,7 @@ authors = ["bhattjaldhi <bhattjaldhi27@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 bidict = "0.23.1"
 blinker = "1.8.2"
 click = "8.1.7"
