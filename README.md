@@ -4,14 +4,15 @@
 
 - [Svelte Socket DuckDB](#svelte-socket-duckdb)
   - [Table of Contents](#table-of-contents)
-  - [Problem Statement](#problem-statement)
+  - [Introduction](#introduction)
   - [Features](#features)
   - [Prerequisites](#prerequisites)
   - [Project Structure](#project-structure)
   - [Installation and Setup](#installation-and-setup)
     - [Docker compose](#docker-compose)
   - [Mermaid Sequence Diagram](#mermaid-sequence-diagram)
-## Problem Statement
+ 
+## Introduction
 
 In many data-driven web applications, there's a need for real-time data analysis and visualization. Traditional client-server architectures often struggle with providing instantaneous updates and handling large datasets efficiently. This project aims to solve this problem by combining the power of Svelte for reactive UI updates, WebSockets for real-time communication, and DuckDB for fast, in-memory SQL analytics.
 
