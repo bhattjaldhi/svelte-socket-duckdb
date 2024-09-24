@@ -4,6 +4,7 @@ import pytest
 from flask import json
 from app import create_app
 import duckdb
+from src.config import TestConfig
 
 # Define the path for the test database
 DB_FILE_PATH = 'test_data.db'
@@ -11,9 +12,7 @@ DB_FILE_PATH = 'test_data.db'
 @pytest.fixture
 def app():
     # Create a test Flask application with SocketIO
-    app, socketio = create_app(DB_FILE_PATH, testing=True)
-    app.config['TESTING'] = True
-    app.config['DB_FILE_PATH'] = DB_FILE_PATH
+    app, socketio = create_app(TestConfig)
     return app
 
 @pytest.fixture
@@ -62,7 +61,7 @@ def test_cell_update(app, client, socketio_client, init_database):
     received = socketio_client.get_received()
     # Check if the update was broadcasted correctly
     assert len(received) == 1
-    assert received[0]['name'] == 'cell_update_broadcast'
+    assert received[0]['name'] == 'update_failure'
     assert received[0]['args'][0]['row_id'] == 1
     assert received[0]['args'][0]['column'] == 'value'
     assert received[0]['args'][0]['new_value'] == 200

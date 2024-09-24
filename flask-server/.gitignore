@@ -5,3 +5,7 @@ poetry.lock
 .pytest_cache
 
 test_data.db
+
+nonexistent.db
+
+__pycache__
