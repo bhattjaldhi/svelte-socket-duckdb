@@ -25,8 +25,8 @@ RUN poetry config virtualenvs.create false \
 # Copy application code
 COPY . .
 
-# Expose port 5000
-EXPOSE 5000
+# Expose port 5001
+EXPOSE 5001
 
 # Start the application with Gunicorn
-CMD ["poetry", "run", "gunicorn", "--worker-class", "eventlet", "-w", "1", "-b", "0.0.0.0:5000", "app:app"]
+CMD ["poetry", "run", "gunicorn", "--worker-class", "eventlet", "-w", "1", "-b", "0.0.0.0:5001", "app:app"]
