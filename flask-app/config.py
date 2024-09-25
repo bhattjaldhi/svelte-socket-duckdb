@@ -3,7 +3,8 @@ from dotenv import load_dotenv
 
 # Load the appropriate .env file based on the FLASK_ENV
 flask_env = os.environ.get('FLASK_ENV', 'development')
-if flask_env == 'testing':
+
+if flask_env == 'test':
     load_dotenv('.env.test')
 else:
     load_dotenv()

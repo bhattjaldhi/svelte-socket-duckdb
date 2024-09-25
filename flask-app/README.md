@@ -44,7 +44,7 @@ To run the Flask app in development mode:
 1.  Build and start the Docker container:
 
     ```bash 
-    docker-compose up --build 
+    FLASK_ENV=development docker-compose up --build
     ```
 
 2.  The Flask app will be available at `http://localhost:5000`.
@@ -59,7 +59,7 @@ To run the Flask app in production mode:
 2.  Build and start the Docker container:
 
     ```bash 
-    docker-compose -f docker-compose.yml up --build -d
+    FLASK_ENV=production docker-compose -f docker-compose.yml up --build -d
     ```
 
 3.  The Flask app will be running in the background. To view logs:
@@ -83,7 +83,7 @@ To run the test suite:
 2.  Run the tests using Docker:
 
     ```bash 
-    docker-compose -f docker-compose.yml up --build
+    FLASK_ENV=test docker-compose -f docker-compose.yml up --build
     ```
 
 3.  The test results will be displayed in the console output.
