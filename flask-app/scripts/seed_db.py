@@ -25,15 +25,26 @@ def create_tables(conn):
 
 def seed_data(conn):
     # Seed categories
-    conn.execute("INSERT INTO category (id, name) VALUES (1, 'Electronics'), (2, 'Clothing');")
+    categories = [
+        (1, 'Electronics'),
+        (2, 'Clothing')
+    ]
+    for category in categories:
+        conn.execute("""
+        INSERT OR REPLACE INTO category (id, name)
+        VALUES (?, ?)
+        """, category)
 
     # Seed products
-    conn.execute('''
-    INSERT INTO product (id, name, amount, color, weight, category_id, brand, SKU, country_of_origin)
-    VALUES 
-    (1, 'Laptop', 50, 'Silver', 2.5, 1, 'BrandA', 'SKU12345', 'USA'),
-    (2, 'T-Shirt', 200, 'Blue', 0.2, 2, NULL, 'SKU67890', 'CHN');
-    ''')
+    products = [
+        (1, 'Laptop', 50, 'Silver', 2.5, 1, 'BrandA', 'SKU12345', 'USA'),
+        (2, 'T-Shirt', 200, 'Blue', 0.2, 2, None, 'SKU67890', 'CHN')
+    ]
+    for product in products:
+        conn.execute("""
+        INSERT OR REPLACE INTO product (id, name, amount, color, weight, category_id, brand, SKU, country_of_origin)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, product)
 
 def main():
     conn = duckdb.connect('data/database.db')
