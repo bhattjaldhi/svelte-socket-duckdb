@@ -59,6 +59,7 @@ def test_cell_update(app, client, socketio_client, init_database):
     # Test updating a cell via SocketIO
     socketio_client.emit('cell_update', {'row_id': 1, 'column': 'value', 'new_value': 200})
     received = socketio_client.get_received()
+    print("Received:", received)
     # Check if the update was broadcasted correctly
     assert len(received) == 1
     assert received[0]['name'] == 'update_failure'

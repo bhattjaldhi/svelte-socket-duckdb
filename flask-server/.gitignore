@@ -1,11 +1,14 @@
 venv/
 
-poetry.lock
+*.pyc
+__pycache__/
 
-.pytest_cache
+instance/
 
-test_data.db
+.pytest_cache/
+.coverage
+htmlcov/
 
-nonexistent.db
-
-__pycache__
+dist/
+build/
+*.egg-info/
