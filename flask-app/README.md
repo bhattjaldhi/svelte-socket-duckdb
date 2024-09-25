@@ -83,7 +83,7 @@ To run the test suite:
 2.  Run the tests using Docker:
 
     ```bash 
-    docker-compose -f docker-compose.yml --env-file .env.test up --build
+    docker-compose -f docker-compose.yml up --build
     ```
 
 3.  The test results will be displayed in the console output.

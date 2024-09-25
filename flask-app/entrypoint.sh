@@ -12,7 +12,7 @@ if [ "$1" = "run" ]; then
     elif [ "$FLASK_ENV" = "production" ]; then
         echo "Running in production mode..."
         gunicorn --worker-class eventlet -w 1 -b 0.0.0.0:5000 run:app
-    elif [ "$FLASK_ENV" = "testing" ]; then
+    elif [ "$FLASK_ENV" = "test" ]; then
         echo "Running tests..."
         pytest
     else
