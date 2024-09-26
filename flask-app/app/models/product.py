@@ -1,10 +1,11 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
-from pydantic import BaseModel, Field
+
 
 class Category(BaseModel):
     id: int
     name: str
+
 
 class Product(BaseModel):
     id: int
@@ -17,6 +18,7 @@ class Product(BaseModel):
     SKU: str
     country_of_origin: str = Field(..., max_length=3)
 
+
 class ProductCreate(BaseModel):
     name: str
     amount: int
@@ -26,6 +28,7 @@ class ProductCreate(BaseModel):
     brand: Optional[str] = None
     SKU: str
     country_of_origin: str = Field(..., max_length=3)
+
 
 class ProductUpdate(BaseModel):
     name: Optional[str] = None
@@ -37,19 +40,22 @@ class ProductUpdate(BaseModel):
     SKU: Optional[str] = None
     country_of_origin: Optional[str] = Field(None, max_length=3)
 
+
 class ProductResponse(BaseModel):
     data: List
 
 
 class CellUpdateRequest(BaseModel):
-    table_name: str = Field(..., pattern='^(product|category)$')
+    table_name: str = Field(..., pattern="^(product|category)$")
     row_id: int
     column: str
     new_value: str
 
+
 class CellUpdateResponse(BaseModel):
     status: str
     message: str
+
 
 class UpdateFailureResponse(BaseModel):
     status: str

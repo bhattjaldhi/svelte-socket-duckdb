@@ -21,10 +21,14 @@ COPY pyproject.toml poetry.lock* /app/
 
 # Project initialization:
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi
+    && poetry install --no-interaction --no-ansi --with dev
 
 # Copy project
 COPY . /app
+
+# Run Flake8 and Black
+RUN poetry run flake8 .
+RUN poetry run black --check .
 
 # Make the entrypoint script executable
 RUN chmod +x /app/entrypoint.sh

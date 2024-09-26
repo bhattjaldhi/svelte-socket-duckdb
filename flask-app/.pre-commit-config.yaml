@@ -1,0 +1,13 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+  - repo: https://github.com/PyCQA/flake8
+    rev: 5.0.4
+    hooks:
+      - id: flake8
+        args: 
+          - --max-line-length=88
+          - --max-complexity=18
+          - --extend-ignore=E203,E266,E501,W503,E302,W292,W293

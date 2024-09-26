@@ -1,0 +1,15 @@
+[flake8]
+exclude =
+    .git,
+    __pycache__,
+    .env,
+    env,
+    venv,
+    */migrations/*,
+    manage.py,
+    settings.py
+
+max-line-length = 88
+extend-ignore = E203, E266, E501, W503, E302, W292, W293
+max-complexity = 18
+select = B,C,E,F,W,T4,B9

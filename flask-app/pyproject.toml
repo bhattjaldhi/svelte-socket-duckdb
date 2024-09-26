@@ -19,6 +19,28 @@ gunicorn = "^23.0.0"
 eventlet = "^0.37.0"
 
 
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.1.1"
+black = "^24.8.0"
+pre-commit = "^3.8.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
