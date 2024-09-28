@@ -1,6 +1,6 @@
 from flask_socketio import emit
 from app import socketio
-from app.services.database import update_cell
+from app.services.database import update_cell_sync
 from app.models.product import (
     CellUpdateRequest,
     CellUpdateResponse,
@@ -16,7 +16,7 @@ def handle_cell_update(data):
         update_request = CellUpdateRequest(**data)
 
         # Perform the cell update in the database
-        update_cell(
+        update_cell_sync(
             update_request.table_name,
             update_request.row_id,
             update_request.column,

@@ -13,3 +13,41 @@ services:
     environment:
       - FLASK_ENV=${FLASK_ENV:-development}
     command: run
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  celery_worker:
+    build: .
+    command: celery -A app.celery worker --loglevel=info
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+      - .env.${FLASK_ENV:-development}
+    environment:
+      - FLASK_ENV=${FLASK_ENV:-development}
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis_data:
